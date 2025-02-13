@@ -4,6 +4,8 @@ Install anaconda on your computer
 then create a new environment using:
 `conda create --name new_environment_name --file requirements.txt`
 
+This file also serves as report, as I have mentioned everything here.
+
 ## coin detection
 
 This script detects and segments coins in an image. It performs the following steps:
@@ -41,6 +43,13 @@ The script will generate the following output in the `./output images/coin detec
 - The total number of coins detected is saved in a text file.
 - The segmented coin images are saved in the output directory.
 
+### challaneges and what worked.
+
+- I converted the image to grayscale using `gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)`, convertion to greayscale is recommended. 
+- initailly, when I was smoothing the image using gaussian kernal `cv2.GaussianBlur(gray, (m,m), 0)`, when I used kernel sizes of >= 17*17 is was detecting more number of coins and less than 9*9 were giving less number of coins, after few trial and error it was found kernels b/w 11*11 and 15*15 were detecting the exact number of coins.
+- Also I had to adjust the parameters of canny for it to work correclty (threshold values 30, 150) otherwise it was joining closer coins. `edges = cv2.Canny(blurred, 30, 150)`
+
+
 ## Panorama Creation
 This script creates a panorama by stitching two images together. It performs the following steps:
 1. Extracts keypoints and descriptors from the input images.
@@ -73,6 +82,15 @@ The script will generate the following output in the `./output images/panorama` 
 
 - The script successfully creates a panorama by stitching the input images together.
 - The keypoints and matches are visualized and saved in the output directory.
+
+### challaneges and what worked.
+
+- I used the Scale-Invariant Feature Transform (SIFT) algorithm to detect and describe keypoints in an image.
+- First, I created a SIFT object using `sift = cv2.SIFT_create()`.
+- Then, I converted the image to grayscale using `gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)`, convertion to greayscale is recommended. 
+- The keypoints and descriptors were extracted from the grayscale image with `keypoints, descriptors = sift.detectAndCompute(gray, None)`.
+- To visualize the detected keypoints, I drew them on the original image using `image_with_keypoints = cv2.drawKeypoints(image, keypoints, None, color=(0, 255, 0))`.
+- Finally, I returned the keypoints, descriptors, and the image with keypoints.
 
 ## Visual Outputs
 
